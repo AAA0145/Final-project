@@ -1,0 +1,83 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(e1071)
+library(caTools)
+library(class)
+data(iris)
+str(iris)
+head(iris)
+# split the data into train 70% and test data 30%
+split <- sample.split(iris, SplitRatio = 0.7)
+train <- subset(iris, split == "TRUE")
+test <- subset(iris, split == "FALSE")
+
+# we scale the data
+
+scale_train <- scale(train[, 1:4])
+scale_test <- scale(test[, 1:4])
+
+# run the KNN algorithm 
+knn_algorithm <- knn(train = scale_train,test = scale_test,cl = train$Species, k = 1)
+knn_algorithm
+cm <- table(test_cl$Species, knn_algorithm)
+cm
+# find the errors in the and accuracy
+KNN_Error <- mean(knn_algorithm != test$Species)
+print(paste('Accuracy =', 1-KNN_Error))
+knn_algorithm <- knn(train = scale_train,test = scale_test, cl = train$Species, k = 19)
+KNN_Error <- mean(knn_algorithm != test_cl$Species)
+print(paste('Accuracy =', 1-KNN_Error))
+#plot(knn_algorithm)
+```
+
+
+
+```{r}
+library(e1071)
+library(caTools)
+library(class)
+data(iris)
+str(iris)
+head(iris)
+
+split <- sample.split(iris, SplitRatio = 0.7)
+train_cl <- subset(iris, split == "TRUE")
+test_cl <- subset(iris, split == "FALSE")
+
+train_scale <- scale(train_cl[, 1:4])
+test_scale <- scale(test_cl[, 1:4])
+classifier_knn <- knn(train = train_scale,
+                      test = test_scale,
+                      cl = train_cl$Species,
+                      k = 1)
+classifier_knn
+cm <- table(test_cl$Species, classifier_knn)
+cm
+
+misClassError <- mean(classifier_knn != test_cl$Species)
+print(paste('Accuracy =', 1-misClassError))
+classifier_knn <- knn(train = train_scale,
+                      test = test_scale,
+                      cl = train_cl$Species,
+                      k = 19)
+misClassError <- mean(classifier_knn != test_cl$Species)
+print(paste('Accuracy =', 1-misClassError))
+
+
+
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
